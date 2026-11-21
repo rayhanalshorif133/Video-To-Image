@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video to Image Converter Pro | ভিডিও টু ইমেজ সফটওয়্যার (Web)</title>
+  <meta name="description" content="ভিডিও থেকে নির্দিষ্ট FPS বা ইন্টারভাল অনুযায়ী স্বয়ংক্রিয়ভাবে হাই-কোয়ালিটি ছবি (Images) তৈরি করার আধুনিক ওয়েব অ্যাপ।">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo-icon">🎬</div>
+        <div>
+          <h1 class="app-title">Video to Image Converter Pro</h1>
+          <p class="app-subtitle">ভিডিও থেকে ইমেজ এক্সট্র্যাক্টর • হাই-স্পিড ওয়েব সংস্করণ</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <a href="https://github.com/rayhanalshorif133/Video-To-Image" target="_blank" rel="noopener" class="btn btn-outline btn-sm" title="GitHub Repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <button id="themeToggleBtn" class="btn btn-outline btn-sm" aria-label="Toggle Theme">
+          <span class="theme-icon">🌓</span>
+          <span class="theme-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Card 1: Video Selection -->
+      <section class="card" id="cardVideo">
+        <div class="card-header">
+          <h2 class="card-title">১. ভিডিও সিলেক্ট করুন (Select Video)</h2>
+          <span class="badge badge-info">100% Client-Side • Secure</span>
+        </div>
+        <div class="card-body">
+          <!-- Drop Area -->
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="videoFileInput" accept="video/*,.mp4,.mkv,.avi,.mov,.flv,.wmv,.webm" class="file-input-hidden">
+            <div class="drop-zone-content">
+              <div class="upload-icon">📁</div>
+              <p class="drop-title">ভিডিও ফাইল এখানে টেনে এনে ছাড়ুন অথবা ব্রাউজ করুন</p>
+              <p class="drop-subtitle">সমর্থিত ফরম্যাট: MP4, WebM, MOV, MKV, AVI ইত্যাদি</p>
+              <button type="button" class="btn btn-primary" id="browseBtn">
+                <span>📁 ব্রাউজ ভিডিও...</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Video Preview & Metadata Container -->
+          <div id="videoMetadataCard" class="metadata-wrapper hidden">
+            <div class="meta-row">
+              <div class="video-preview-wrapper">
+                <video id="sourceVideo" controls muted playsinline></video>
+              </div>
+              <div class="meta-details-grid">
+                <div class="meta-item">
+                  <span class="meta-label">ফাইলের নাম:</span>
+                  <span class="meta-val" id="metaFilename">-</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">ফাইলের সাইজ:</span>
+                  <span class="meta-val" id="metaFilesize">-</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">ডিউরেশন:</span>
+                  <span class="meta-val highlight" id="metaDuration">-</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">রেজোলিউশন:</span>
+                  <span class="meta-val" id="metaResolution">-</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">অরিজিনাল FPS:</span>
+                  <span class="meta-val" id="metaFps">-</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">মোট আনুমানিক ফ্রেম:</span>
+                  <span class="meta-val" id="metaTotalFrames">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card 2: Extraction & FPS Settings -->
+      <section class="card" id="cardSettings">
+        <div class="card-header">
+          <h2 class="card-title">২. এক্সট্র্যাকশন ও FPS সেটিংস (Extraction Settings)</h2>
+          <span class="badge" id="modeBadge">FPS Mode</span>
+        </div>
+        <div class="card-body">
+          <!-- Modes Segmented Control -->
+          <div class="segmented-control" role="tablist">
+            <button class="seg-btn active" data-mode="fps" type="button">
+              🎯 টার্গেট FPS
+            </button>
+            <button class="seg-btn" data-mode="interval_seconds" type="button">
+              ⏱️ সেকেন্ড ইন্টারভাল
+            </button>
+            <button class="seg-btn" data-mode="interval_frames" type="button">
+              🎞️ ফ্রেম ইন্টারভাল
+            </button>
+            <button class="seg-btn" data-mode="all" type="button">
+              🌟 সব ফ্রেম
+            </button>
+          </div>
+
+          <!-- Mode Explanation & Controls -->
+          <div class="mode-config-panel">
+            <div class="mode-desc" id="modeDescription">
+              প্রতি সেকেন্ডে কয়টি ছবি সেভ হবে তা নির্ধারণ করুন (যেমন: 1.0 = প্রতি সেকেন্ডে ১টি ছবি, 0.5 = প্রতি ২ সেকেন্ডে ১টি ছবি)।
+            </div>
+
+            <!-- Param Input Row -->
+            <div class="param-row" id="paramRow">
+              <label class="param-label" id="paramLabel" for="paramInput">টার্গেট FPS ভ্যালু:</label>
+              <div class="param-input-group">
+                <input type="number" id="paramInput" value="1.0" min="0.01" step="0.1" class="form-input">
+                <span class="input-unit" id="inputUnit">FPS</span>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="preset-chips" id="presetChips">
+                <!-- Dynamically populated or switchable -->
+                <button type="button" class="chip" data-val="0.25">0.25</button>
+                <button type="button" class="chip" data-val="0.5">0.5</button>
+                <button type="button" class="chip active" data-val="1.0">1.0</button>
+                <button type="button" class="chip" data-val="2.0">2.0</button>
+                <button type="button" class="chip" data-val="5.0">5.0</button>
+                <button type="button" class="chip" data-val="native">Native</button>
+              </div>
+            </div>
+
+            <!-- Live Estimation Box -->
+            <div class="estimation-box">
+              <div class="est-item">
+                <span class="est-icon">🖼️</span>
+                <div>
+                  <span class="est-title">মোট সম্ভাব্য ছবি:</span>
+                  <span class="est-value" id="estCount">০ টি ছবি</span>
+                </div>
+              </div>
+              <div class="est-divider"></div>
+              <div class="est-item">
+                <span class="est-icon">📦</span>
+                <div>
+                  <span class="est-title">আনুমানিক প্যাকেজ সাইজ:</span>
+                  <span class="est-value" id="estSize">~০.০০ MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card 3: Output Configuration -->
+      <section class="card" id="cardOutput">
+        <div class="card-header">
+          <h2 class="card-title">৩. আউটপুট কনফিগারেশন (Output Settings)</h2>
+        </div>
+        <div class="card-body">
+          <div class="output-grid">
+            <!-- Format Selection -->
+            <div class="form-group">
+              <label class="form-label">ইমেজ ফরম্যাট:</label>
+              <div class="format-chips">
+                <label class="radio-chip">
+                  <input type="radio" name="imageFormat" value="image/jpeg" checked>
+                  <span class="radio-chip-inner">JPG (Small)</span>
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="imageFormat" value="image/png">
+                  <span class="radio-chip-inner">PNG (Lossless)</span>
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="imageFormat" value="image/webp">
+                  <span class="radio-chip-inner">WEBP (Modern)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Quality Slider -->
+            <div class="form-group" id="qualityGroup">
+              <div class="label-with-val">
+                <label class="form-label" for="qualitySlider">ইমেজ কোয়ালিটি:</label>
+                <span class="slider-val" id="qualityVal">95%</span>
+              </div>
+              <input type="range" id="qualitySlider" min="50" max="100" value="95" class="range-slider">
+            </div>
+
+            <!-- Prefix -->
+            <div class="form-group">
+              <label class="form-label" for="prefixInput">ফাইলের প্রিফিক্স (Prefix):</label>
+              <input type="text" id="prefixInput" value="frame" placeholder="যেমন: frame" class="form-input">
+            </div>
+
+            <!-- Naming Style -->
+            <div class="form-group">
+              <label class="form-label">ফাইল নেইমিং স্টাইল:</label>
+              <div class="naming-options">
+                <label class="radio-label">
+                  <input type="radio" name="namingStyle" value="counter" checked>
+                  <span>সিরিয়াল কাউন্টার (<code id="counterPreview">frame_0001.jpg</code>)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="namingStyle" value="timestamp">
+                  <span>টাইমস্ট্যাম্প (<code id="timePreview">frame_00m01s_250ms.jpg</code>)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card 4: Live Progress & Preview -->
+      <section class="card" id="cardProgress">
+        <div class="card-header">
+          <h2 class="card-title">৪. প্রগ্রেস ও লাইভ প্রিভিউ (Progress & Preview)</h2>
+          <span class="status-indicator ready" id="statusBadge">প্রস্তুত (Ready)</span>
+        </div>
+        <div class="card-body">
+          <div class="progress-layout">
+            <!-- Left: Numbers and Progress Bar -->
+            <div class="progress-stats-panel">
+              <div class="big-percent" id="percentDisplay">0%</div>
+
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+              </div>
+
+              <div class="progress-count" id="countDisplay">০ / ০ টি ছবি সংরক্ষিত</div>
+
+              <div class="metrics-row">
+                <div class="metric-box">
+                  <span class="metric-label">⚡ স্পিড</span>
+                  <span class="metric-val" id="metricSpeed">0.0 fps</span>
+                </div>
+                <div class="metric-box">
+                  <span class="metric-label">⏱️ অতিবাহিত সময়</span>
+                  <span class="metric-val" id="metricElapsed">00:00</span>
+                </div>
+                <div class="metric-box">
+                  <span class="metric-label">⏳ বাকি সময়</span>
+                  <span class="metric-val" id="metricEta">00:00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Live Thumbnail Canvas Preview -->
+            <div class="preview-panel">
+              <div class="preview-title">লাইভ ফ্রেম প্রিভিউ</div>
+              <div class="preview-canvas-wrapper">
+                <canvas id="previewCanvas"></canvas>
+                <div class="preview-placeholder" id="previewPlaceholder">
+                  <span>ভিডিও শুরু হলে এখানে ফ্রেম দেখা যাবে</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Buttons Bar -->
+      <div class="action-bar">
+        <button type="button" class="btn btn-success btn-lg" id="startBtn" disabled>
+          <span class="btn-icon">▶️</span>
+          <span>কনভার্ট শুরু করুন (Start Extraction)</span>
+        </button>
+        <button type="button" class="btn btn-warning btn-lg hidden" id="pauseBtn">
+          <span class="btn-icon">⏸️</span>
+          <span>পজ (Pause)</span>
+        </button>
+        <button type="button" class="btn btn-danger btn-lg hidden" id="cancelBtn">
+          <span class="btn-icon">⏹️</span>
+          <span>বাতিল করুন (Cancel)</span>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg hidden" id="downloadZipBtn">
+          <span class="btn-icon">📦</span>
+          <span>সব ছবি ZIP ডাউনলোড করুন (Download ZIP)</span>
+        </button>
+      </div>
+
+      <!-- Card 5: Results & Gallery (Visible when frames are ready) -->
+      <section class="card hidden" id="cardGallery">
+        <div class="card-header">
+          <h2 class="card-title">৫. এক্সট্র্যাক্ট করা ছবিসমূহ (Extracted Images)</h2>
+          <div class="gallery-actions">
+            <span class="badge badge-success" id="galleryCountBadge">০ টি ছবি</span>
+            <button type="button" class="btn btn-primary btn-sm" id="downloadZipHeaderBtn">
+              📦 ZIP ডাউনলোড
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery images dynamically inserted here -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Image Modal for Full View -->
+    <div class="modal hidden" id="imageModal">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Frame Preview</h3>
+          <button type="button" class="modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <img id="modalImg" src="" alt="Full frame">
+        </div>
+        <div class="modal-footer">
+          <a id="modalDownloadBtn" href="#" download="" class="btn btn-primary">⬇️ ছবি ডাউনলোড করুন</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Offscreen Canvas for extraction -->
+    <canvas id="offscreenCanvas" style="display: none;"></canvas>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>🎬 <strong>Video to Image Converter Pro</strong> • Open Source High Speed Converter</p>
+      <p>Created by <a href="https://github.com/rayhanalshorif133" target="_blank" rel="noopener">Rayhan Al Shorif</a> • All processing happens directly in your browser without uploading to any server.</p>
+    </footer>
+  </div>
+
+  <!-- Local JSZip with CDN fallback -->
+  <script src="js/jszip.min.js"></script>
+  <script>
+    if (typeof JSZip === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      document.head.appendChild(script);
+    }
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html>
